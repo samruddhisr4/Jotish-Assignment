@@ -1,0 +1,16 @@
+/* Reset default Vite styles to allow full-screen layouts */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #242424;
+  color: white;
+}
+
+#root {
+  width: 100%;
+}
