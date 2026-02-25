@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Webcam from 'react-webcam';
 import { Camera, ArrowLeft, User, Briefcase, MapPin, Calendar, DollarSign } from 'lucide-react';
 
 const Details = () => {
+    const { id } = useParams();
     const { state } = useLocation();
     const employee = state?.employee || state; // Handle both direct pass and wrapped state
     const navigate = useNavigate();
@@ -19,12 +20,17 @@ const Details = () => {
         );
     }
 
+    const photoKey = `employee_photo_${id}`;
+    const capturedImage = localStorage.getItem(photoKey);
+
     const capture = React.useCallback(() => {
+        if (!webcamRef.current) return;
         const imageSrc = webcamRef.current.getScreenshot();
-        // Persist to localStorage to ensure it's "always visible"
-        localStorage.setItem('lastCapturedPhoto', imageSrc);
-        navigate('/photo-result', { state: { ...state, employee } });
-    }, [webcamRef, navigate]);
+        if (imageSrc) {
+            localStorage.setItem(photoKey, imageSrc);
+            navigate('/photo-result', { state: { ...state, employee, id } });
+        }
+    }, [webcamRef, navigate, state, employee, id, photoKey]);
 
     return (
         <div className="details-container">
@@ -34,8 +40,14 @@ const Details = () => {
 
             <div className="details-card">
                 <div className="card-header">
-                    <div className="avatar">
-                        {employee[0]?.charAt(0) || 'E'}
+                    <div className="avatar-wrapper">
+                        {capturedImage ? (
+                            <img src={capturedImage} alt="Profile" className="avatar-img" />
+                        ) : (
+                            <div className="avatar">
+                                {employee[0]?.charAt(0) || 'E'}
+                            </div>
+                        )}
                     </div>
                     <h1>{employee[0]}</h1>
                     <p>{employee[1]}</p>
@@ -106,11 +118,17 @@ const Details = () => {
         }
         
         .card-header { text-align: center; margin-bottom: 2rem; }
-        .avatar { 
-          width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-          border-radius: 50%; margin: 0 auto 1rem; display: flex; justify-content: center; align-items: center; 
+        .avatar-wrapper { margin-bottom: 1rem; }
+        .avatar, .avatar-img { 
+          width: 80px; height: 80px; 
+          border-radius: 50%; margin: 0 auto; 
+          display: flex; justify-content: center; align-items: center; 
           font-size: 2rem; font-weight: bold; 
+          border: 3px solid #667eea;
+          object-fit: cover;
         }
+        .avatar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .avatar-img { background: #333; }
         .card-header h1 { margin: 0; font-size: 1.8rem; }
         .card-header p { margin: 0.5rem 0 0; opacity: 0.6; color: #667eea; font-weight: 500; }
 

@@ -5,8 +5,11 @@ import { Camera, ArrowLeft, Download, RotateCcw } from 'lucide-react';
 const PhotoResult = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
-    // Retrieve from localStorage for persistence
-    const capturedImage = localStorage.getItem('lastCapturedPhoto');
+    const employeeId = state?.id;
+
+    // Retrieve from localStorage using scoped key
+    const photoKey = employeeId ? `employee_photo_${employeeId}` : 'lastCapturedPhoto';
+    const capturedImage = localStorage.getItem(photoKey);
 
     if (!capturedImage) {
         return (

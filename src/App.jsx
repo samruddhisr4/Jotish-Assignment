@@ -6,6 +6,9 @@ import PhotoResult from './pages/PhotoResult';
 import Charts from './pages/Charts';
 import MapView from './pages/MapView';
 
+import Demographics from './pages/Demographics';
+import Performance from './pages/Performance';
+
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +18,8 @@ function App() {
         <Route path="/details/:id" element={<Details />} />
         <Route path="/photo-result" element={<PhotoResult />} />
         <Route path="/charts" element={<Charts />} />
+        <Route path="/demographics" element={<Demographics />} />
+        <Route path="/performance" element={<Performance />} />
         <Route path="/map" element={<MapView />} />
       </Routes>
     </BrowserRouter>
