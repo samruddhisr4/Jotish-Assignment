@@ -22,10 +22,10 @@ const Login = () => {
   return (
     <div className="login-container">
       <form onSubmit={handleLogin} className="login-card">
-        <h1>Welcome Back</h1>
-        
+        <h1>Login</h1>
+
         {error && <p className="error-message" style={{ color: '#ff4d4d', marginBottom: '1rem' }}>{error}</p>}
-        
+
         <div className="input-group">
           <User size={20} className="icon" />
           <input
@@ -85,13 +85,20 @@ const Login = () => {
         }
         .icon { opacity: 0.7; margin-right: 10px; }
         input {
-          background: transparent;
+          background: transparent !important;
           border: none;
           padding: 1rem 0;
           color: white;
           width: 100%;
           outline: none;
           font-size: 1rem;
+        }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+          -webkit-text-fill-color: white;
+          -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+          transition: background-color 5000s ease-in-out 0s;
         }
         input::placeholder { color: rgba(255, 255, 255, 0.6); }
         .login-button {
